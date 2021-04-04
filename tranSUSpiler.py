@@ -22,7 +22,7 @@ def parse_args(argv):
     fname = ''
     mode = ''
     try:
-        opts, _ = getopt.getopt(argv, 'hsnf:')
+        opts, _ = getopt.getopt(argv, 'hsnf:', ['help', 'sus', 'not-sus'])
     except getopt.GetoptError:
         print_usage()
         exit(1)
