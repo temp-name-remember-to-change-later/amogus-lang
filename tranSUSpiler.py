@@ -18,7 +18,7 @@ def print_usage():
 
 def parse_args(argv):
     fname = ''
-    mode = 'sus'
+    mode = ''
     try:
         opts, _ = getopt.getopt(argv, 'hsnf:')
     except getopt.GetoptError:
@@ -108,7 +108,8 @@ english_to_amogus = {
         'X': 'AMoGUS',
         'Y': 'amOGUS',
         'Z': 'AmOGUS',
-        ' ': 'ඞ' }
+        ' ': 'ඞ',
+        'ඞ': 'ඞඞ' }
 amogus_to_english = {v: k for k, v in english_to_amogus.items()}
 
 # make characters sus
@@ -130,7 +131,7 @@ def desus(sus):
 def main(argv):
     fname, mode = parse_args(argv)
     if mode == 'sus':
-        f = open(fname, 'r')
+        f = open(fname, 'r', encoding='utf-8')
         outfname = fname + '.sus'
         outf = open(outfname, 'wb')
         for line in f:
@@ -138,8 +139,28 @@ def main(argv):
                 outf.write(ensus(ch).encode('utf-8'))
                 if ch != '\n':
                     outf.write(' '.encode('utf-8'))
-                print(ch, end='')
         outf.close()
+    elif mode == 'not-sus':
+        if not fname.endswith('.sus'):
+            print('Error: file to decode must have the extension .sus')
+            exit(2)
+        f = open(fname, 'r', encoding='utf-8')
+        outfname = fname[:len(fname) - 4]
+        outf = open(outfname, 'wb')
+        for line in f:
+            arr = []
+            for ch in line:
+                if ch == ' ':
+                    outf.write(desus(''.join(arr)).encode('utf-8'))
+                    arr = []
+                else:
+                    arr.append(ch)
+            outf.write('\n'.encode('utf-8'))
+        outf.close()
+
+    else:
+        print_usage()
+        exit(1)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
