@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+import os
+import sys
+from tranSUSpiler import main
+
+if len(sys.argv) != 2:
+    print('Usage: amogus <file>')
+    exit(1)
+
+fname = sys.argv[1]
+if not fname.endswith('.sus'):
+    print('Error: file name must end with .sus')
+    exit(2)
+
+desussed = fname[:len(fname) - 4]
+main(['-n', '-f', fname])
+os.system('python {}'.format(desussed))
+os.system('rm {}'.format(desussed))
